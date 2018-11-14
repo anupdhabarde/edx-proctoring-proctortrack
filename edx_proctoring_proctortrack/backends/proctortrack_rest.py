@@ -28,7 +28,7 @@ class ProctortrackBackendProvider(BaseRestProctoringProvider):
         client_id: provided by backend service
         client_secret: provided by backend service
         """
-        ProctoringBackendProvider.__init__(self)
+        BaseRestProctoringProvider.__init__(self)
         self.client_id = client_id
         self.client_secret = client_secret
         self.default_config = None
