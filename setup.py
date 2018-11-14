@@ -11,7 +11,7 @@ from setuptools import setup
 
 
 setup(
-    name='edx-proctoring',
+    name='edx-proctoring-proctortrack',
     description='Proctoring subsystem for edX-proctoring',
     author='Verificient',
     author_email='vivek@verificient.com',
