@@ -48,8 +48,8 @@ class ProctortrackBackendProvider(BaseRestProctoringProvider):
 
     @property
     def instructor_url(self):
-        "Returns the instructor dashboar url"
-        return self.base_url + u'v1/instructor/{client_id}/?jwt={jwt}'
+        "Returns the instructor dashboard url"
+        return self.base_url + u'launch/edx/instructor/{client_id}/?jwt={jwt}'
 
     def __init__(self, client_id=None, client_secret=None, **kwargs):
         """
