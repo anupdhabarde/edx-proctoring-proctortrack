@@ -23,7 +23,7 @@ class ProctortrackBackendProvider(BaseRestProctoringProvider):
     Subclasses must override base_url and may override the other url
     properties
     """
-    base_url = 'https://prestaging.verificient.com'
+    base_url = 'https://prestaging.verificient.com/'
 
     @property
     def exam_attempt_url(self):
