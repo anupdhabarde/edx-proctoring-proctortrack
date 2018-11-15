@@ -2,11 +2,6 @@
 Base implementation of a REST backend, following the API documented in
 docs/backends.rst
 """
-import jwt
-from datetime import datetime, timedelta
-from rest_framework_jwt.settings import api_settings
-
-from edx_proctoring.backends.backend import ProctoringBackendProvider
 from edx_rest_api_client.client import OAuthAPIClient
 from edx_proctoring.backends.rest import BaseRestProctoringProvider
 
