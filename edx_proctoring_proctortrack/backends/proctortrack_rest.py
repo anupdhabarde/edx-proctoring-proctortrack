@@ -93,7 +93,7 @@ class ProctortrackBackendProvider(BaseRestProctoringProvider):
             'instructor_email': instructor_email,
             'course_id': course_id,
             'test_id': test_id,
-            'exp': datetime.utcnow() + self.TOKEN_EXPIRATION
+            'exp': datetime.utcnow() + self.INSTRUCTOR_TOKEN_EXPIRATION
         }
         token = self.jwt_encode_handler(payload)
         launch_url = self.instructor_launch_url + '?token={0}'.format(token)
