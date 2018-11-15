@@ -47,11 +47,6 @@ class ProctortrackBackendProvider(BaseRestProctoringProvider):
         return self.base_url + u'api/v1/config/'
 
     @property
-    def instructor_launch_url(self):
-        "Returns proctor config url"
-        return self.base_url + u'launch/edx/{0}?token={1}'
-
-    @property
     def instructor_url(self):
         "Returns the instructor dashboar url"
         return self.base_url + u'api/v1/instructor/{client_id}/?jwt={jwt}'
