@@ -55,7 +55,7 @@ class ProctortrackBackendProvider(BaseRestProctoringProvider):
     @property
     def instructor_launch_url(self):
         "Returns proctor config url"
-        return self.base_url + u'launch/edx'
+        return self.base_url + u'launch/edx/{0}?token={1}'
 
     def __init__(self, client_id=None, client_secret=None, **kwargs):
         """
@@ -89,13 +89,12 @@ class ProctortrackBackendProvider(BaseRestProctoringProvider):
             than instructor will be redirected to course view.
         """
         payload = {
-            'client_id': self.client_id,
             'instructor_email': instructor_email,
             'course_id': course_id,
             'test_id': test_id,
             'exp': datetime.utcnow() + timedelta(seconds=self.INSTRUCTOR_TOKEN_EXPIRATION)
         }
         token = self.jwt_encode_handler(payload)
-        launch_url = self.instructor_launch_url + '?token={0}'.format(token)
+        launch_url = self.instructor_launch_url.format(self.client_id, token)
         return launch_url
 
