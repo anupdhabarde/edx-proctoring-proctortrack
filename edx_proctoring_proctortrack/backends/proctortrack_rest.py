@@ -49,7 +49,7 @@ class ProctortrackBackendProvider(BaseRestProctoringProvider):
     @property
     def instructor_url(self):
         "Returns the instructor dashboar url"
-        return self.base_url + u'api/v1/instructor/{client_id}/?jwt={jwt}'
+        return self.base_url + u'v1/instructor/{client_id}/?jwt={jwt}'
 
     def __init__(self, client_id=None, client_secret=None, **kwargs):
         """
