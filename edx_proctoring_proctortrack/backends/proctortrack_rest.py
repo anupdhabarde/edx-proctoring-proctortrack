@@ -25,7 +25,6 @@ class ProctortrackBackendProvider(BaseRestProctoringProvider):
     properties
     """
     base_url = 'https://prestaging.verificient.com/'
-    INSTRUCTOR_TOKEN_EXPIRATION = 60  # as it's redirect the token life should be very small.
 
     @property
     def exam_attempt_url(self):
@@ -57,6 +56,11 @@ class ProctortrackBackendProvider(BaseRestProctoringProvider):
         "Returns proctor config url"
         return self.base_url + u'launch/edx/{0}?token={1}'
 
+    @property
+    def instructor_url(self):
+        "Returns the instructor dashboar url"
+        return self.base_url + u'api/v1/instructor/{client_id}/?jwt={jwt}'
+
     def __init__(self, client_id=None, client_secret=None, **kwargs):
         """
         Initialize REST backend.
@@ -70,31 +74,4 @@ class ProctortrackBackendProvider(BaseRestProctoringProvider):
         for key, value in kwargs.items():
             setattr(self, key, value)
         self.session = OAuthPTAPIClient(self.base_url, self.client_id, self.client_secret)
-
-    def jwt_encode_handler(self, payload):
-        key = self.client_secret
-        return jwt.encode(
-            payload,
-            key,
-            api_settings.JWT_ALGORITHM
-        ).decode('utf-8')
-
-    def get_instructor_launch_url(self, instructor_email, course_id=None, test_id=None):
-        """
-            Returns the URL that the instructor needs
-            to be redirected in order to view proctoring data,
-            if test_id is passed in payload
-            than instructor will be redirected to test view.
-            if course_id is passed in payload
-            than instructor will be redirected to course view.
-        """
-        payload = {
-            'instructor_email': instructor_email,
-            'course_id': course_id,
-            'test_id': test_id,
-            'exp': datetime.utcnow() + timedelta(seconds=self.INSTRUCTOR_TOKEN_EXPIRATION)
-        }
-        token = self.jwt_encode_handler(payload)
-        launch_url = self.instructor_launch_url.format(self.client_id, token)
-        return launch_url
 
