@@ -3,7 +3,7 @@ Base implementation of a REST backend, following the API documented in
 docs/backends.rst
 """
 import jwt
-from datetime import datetime
+from datetime import datetime, timedelta
 from rest_framework_jwt.settings import api_settings
 
 from edx_proctoring.backends.backend import ProctoringBackendProvider
@@ -93,7 +93,7 @@ class ProctortrackBackendProvider(BaseRestProctoringProvider):
             'instructor_email': instructor_email,
             'course_id': course_id,
             'test_id': test_id,
-            'exp': datetime.utcnow() + self.INSTRUCTOR_TOKEN_EXPIRATION
+            'exp': datetime.utcnow() + timedelta(seconds=self.INSTRUCTOR_TOKEN_EXPIRATION)
         }
         token = self.jwt_encode_handler(payload)
         launch_url = self.instructor_launch_url + '?token={0}'.format(token)
