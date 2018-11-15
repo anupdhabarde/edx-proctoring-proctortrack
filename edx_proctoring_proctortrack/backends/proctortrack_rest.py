@@ -3,6 +3,7 @@ Base implementation of a REST backend, following the API documented in
 docs/backends.rst
 """
 import jwt
+from datetime import datetime
 from rest_framework_jwt.settings import api_settings
 
 from edx_proctoring.backends.backend import ProctoringBackendProvider
@@ -24,6 +25,7 @@ class ProctortrackBackendProvider(BaseRestProctoringProvider):
     properties
     """
     base_url = 'https://prestaging.verificient.com/'
+    INSTRUCTOR_TOKEN_EXPIRATION = 60  # as it's redirect the token life should be very small.
 
     @property
     def exam_attempt_url(self):
@@ -90,7 +92,8 @@ class ProctortrackBackendProvider(BaseRestProctoringProvider):
             'client_id': self.client_id,
             'instructor_email': instructor_email,
             'course_id': course_id,
-            'test_id': test_id
+            'test_id': test_id,
+            'exp': datetime.utcnow() + self.TOKEN_EXPIRATION
         }
         token = self.jwt_encode_handler(payload)
         launch_url = self.instructor_launch_url + '?token={0}'.format(token)
