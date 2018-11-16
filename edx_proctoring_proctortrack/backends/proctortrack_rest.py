@@ -2,15 +2,7 @@
 Base implementation of a REST backend, following the API documented in
 docs/backends.rst
 """
-from edx_rest_api_client.client import OAuthAPIClient
 from edx_proctoring.backends.rest import BaseRestProctoringProvider
-
-
-class OAuthPTAPIClient(OAuthAPIClient):
-    """
-    A subclass of OAuthAPIClient
-    """
-    oauth_uri = '/edx/oauth2/access_token'
 
 
 class ProctortrackBackendProvider(BaseRestProctoringProvider):
@@ -19,37 +11,12 @@ class ProctortrackBackendProvider(BaseRestProctoringProvider):
     Subclasses must override base_url and may override the other url
     properties
     """
-    base_url = 'https://prestaging.verificient.com/'
-
-    @property
-    def exam_attempt_url(self):
-        "Returns exam attempt url"
-        return self.base_url + u'api/v1/exam/{exam_id}/attempt/{attempt_id}/'
-
-    @property
-    def create_exam_attempt_url(self):
-        "Returns the create exam url"
-        return self.base_url + u'api/v1/exam/{exam_id}/attempt/'
-
-    @property
-    def create_exam_url(self):
-        "Returns create exam url"
-        return self.base_url + u'api/v1/exam/'
-
-    @property
-    def exam_url(self):
-        "Returns exam url"
-        return self.base_url + u'api/v1/exam/{exam_id}/'
-
-    @property
-    def config_url(self):
-        "Returns proctor config url"
-        return self.base_url + u'api/v1/config/'
+    base_url = 'https://prestaging.verificient.com'
 
     @property
     def instructor_url(self):
         "Returns the instructor dashboard url"
-        return self.base_url + u'launch/edx/instructor/{client_id}/?jwt={jwt}'
+        return self.base_url + u'/launch/edx/instructor/{client_id}/?jwt={jwt}'
 
     def __init__(self, client_id=None, client_secret=None, **kwargs):
         """
@@ -63,5 +30,5 @@ class ProctortrackBackendProvider(BaseRestProctoringProvider):
         self.default_config = None
         for key, value in kwargs.items():
             setattr(self, key, value)
-        self.session = OAuthPTAPIClient(self.base_url, self.client_id, self.client_secret)
+        self.session.oauth_uri = '/edx/oauth2/access_token'
 
