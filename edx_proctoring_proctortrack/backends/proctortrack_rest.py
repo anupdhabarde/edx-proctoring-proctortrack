@@ -18,7 +18,7 @@ class ProctortrackBackendProvider(BaseRestProctoringProvider):
         "Returns the instructor dashboard url"
         return self.base_url + u'/launch/edx/instructor/{client_id}/?jwt={jwt}'
 
-    def __init__(self, client_id=None, client_secret=None, **kwargs):
+    def __init__(self, **kwargs):
         """
         Initialize REST backend.
         client_id: provided by backend service
