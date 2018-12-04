@@ -14,7 +14,8 @@ class ProctoringServiceHandler {
 }
 
 var app_not_running_action = function () {
-    alert(pt_msg);
+    console.log(pt_msg);
+    Promise.reject();
 };
 
 var app_running_action = function() {
@@ -26,6 +27,7 @@ var closePTApp = function(initial_port){
     var url = 'https://app.verificient.com:' + initial_port + '/proxy_server/app/close_proctoring/';
     xmlhttp.open('GET', url, true);
     xmlhttp.send();
+    Promise.resolve();
 };
 
 var checkAppStatus = function (initial_port) {
