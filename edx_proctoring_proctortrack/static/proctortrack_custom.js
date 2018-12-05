@@ -8,19 +8,7 @@ var attempt_count = 0; // attempt made to reach app.
 var standard_timeout = 30000;
 var failure_timeout = 30000;
 var max_attempt_count = 5;
-
-
-class PTProctoringServiceHandler {
-  onStartExamAttempt() {
-    checkAppStatus(initial_port);
-  }
-  onEndExamAttempt() {
-    closePTApp(initial_port);
-  }
-  onPing() {
-    checkAppStatus(initial_port);
-  }
-}
+var app_closed = false;
 
 var app_not_running_action = function () {
     console.log(pt_msg);
@@ -38,17 +26,18 @@ var closePTApp = function(initial_port){
     var url = 'https://app.verificient.com:' + initial_port + '/proxy_server/app/close_proctoring/';
     xmlhttp.open('GET', url, true);
     xmlhttp.send();
+    app_closed = true;
     return Promise.resolve();
 };
 
 var checkAppStatus = function (initial_port) {
     // this function is called to check the status of PT APP, if PT app is running it will return resolve else reject;
     // the function will also be called using setTimeout to check the status of PT app at defined interval.
-    var xmlhttp = new XMLHttpRequest();
-    var url = 'https://app.verificient.com:' + initial_port + '/proxy_server/app/proctoring_started/';
-    xmlhttp.open('GET', url, true);
-    xmlhttp.onreadystatechange = function () {
-
+    if (!app_closed){
+        var xmlhttp = new XMLHttpRequest();
+        var url = 'https://app.verificient.com:' + initial_port + '/proxy_server/app/proctoring_started/';
+        xmlhttp.open('GET', url, true);
+        xmlhttp.onreadystatechange = function () {
 
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
             // app is running, notify edx
@@ -85,9 +74,26 @@ var checkAppStatus = function (initial_port) {
                 app_not_running_action();
             }
         }
-    };
-    xmlhttp.send();
+        };
+        xmlhttp.send();
+    }
+    else{
+        return Promise.resolve();
+    }
+
 };
+
+class PTProctoringServiceHandler {
+  onStartExamAttempt() {
+    checkAppStatus(initial_port);
+  }
+  onEndExamAttempt() {
+    closePTApp(initial_port);
+  }
+  onPing() {
+    checkAppStatus(initial_port);
+  }
+}
 
 export default handlerWrapper(PTProctoringServiceHandler);
 
