@@ -39,41 +39,41 @@ var checkAppStatus = function (initial_port) {
         xmlhttp.open('GET', url, true);
         xmlhttp.onreadystatechange = function () {
 
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
-            // app is running, notify edx
-            var data = JSON.parse(xmlhttp.responseText);
-            is_initial_check = false;
-            if (data.proctoring){
-                // proctoring started, notify edx
-                app_running_action();
-
-                attempt_count = 0;  // reset attempt count
-                // set 'checkAppStatus' function to be called at 'standard_timeout' i.e 30 seconds,
-                // this is done to check if PT app is running while student is attempting the exam.
-                setTimeout(function(){
-                    checkAppStatus(initial_port);
-                }, standard_timeout);
-            } else{
-                // app is running but proctoring is not started, notify edx
-                app_not_running_action();
-            }
-        }
-        else if ((xmlhttp.readyState == 4 || xmlhttp.readyState =="complete")) {
-            //app is not running on any port and app server is down, notify edx
-            if (is_initial_check){
-                app_not_running_action();
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
+                // app is running, notify edx
+                var data = JSON.parse(xmlhttp.responseText);
                 is_initial_check = false;
-            } else if ( attempt_count < max_attempt_count) {    // check five more times before returning Promise.reject();.
-                // set 'checkAppStatus' function to be called at 'failure_timeout' i.e 30 seconds,
-                // this is done to check if PT app is re-started by 'watchdog process'
-                setTimeout(function(){
-                    checkAppStatus(initial_port);
-                }, failure_timeout);
-                attempt_count +=1;
-            } else{
-                app_not_running_action();
+                if (data.proctoring){
+                    // proctoring started, notify edx
+                    app_running_action();
+
+                    attempt_count = 0;  // reset attempt count
+                    // set 'checkAppStatus' function to be called at 'standard_timeout' i.e 30 seconds,
+                    // this is done to check if PT app is running while student is attempting the exam.
+                    setTimeout(function(){
+                        checkAppStatus(initial_port);
+                    }, standard_timeout);
+                } else{
+                    // app is running but proctoring is not started, notify edx
+                    app_not_running_action();
+                }
             }
-        }
+            else if ((xmlhttp.readyState == 4 || xmlhttp.readyState =="complete")) {
+                //app is not running on any port and app server is down, notify edx
+                if (is_initial_check){
+                    app_not_running_action();
+                    is_initial_check = false;
+                } else if ( attempt_count < max_attempt_count) {    // check five more times before returning Promise.reject();.
+                    // set 'checkAppStatus' function to be called at 'failure_timeout' i.e 30 seconds,
+                    // this is done to check if PT app is re-started by 'watchdog process'
+                    setTimeout(function(){
+                        checkAppStatus(initial_port);
+                    }, failure_timeout);
+                    attempt_count +=1;
+                } else{
+                    app_not_running_action();
+                }
+            }
         };
         xmlhttp.send();
     }
