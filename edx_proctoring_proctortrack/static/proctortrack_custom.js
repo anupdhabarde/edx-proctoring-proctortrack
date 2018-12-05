@@ -77,10 +77,6 @@ var checkAppStatus = function (initial_port) {
         };
         xmlhttp.send();
     }
-    else{
-        return Promise.resolve();
-    }
-
 };
 
 class PTProctoringServiceHandler {
