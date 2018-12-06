@@ -44,8 +44,8 @@ var checkAppStatus = function () {
                         reject(Error("Proctortrack app is running but proctoring hasn't started."));
                     }
                 } else {
+                    failedAttemptCount += 1;
                     if (failedAttemptCount < maxFailedAttemptCount) {
-                        failedAttemptCount += 1;
                         setTimeout(attemptConnection, 30 * 1000);
                     } else {
                         reject(Error("Failed to check if proctoring has started."));
@@ -53,8 +53,8 @@ var checkAppStatus = function () {
                 }
             };
             xhr.onerror = function () {
+                failedAttemptCount += 1;
                 if (failedAttemptCount < maxFailedAttemptCount) {
-                    failedAttemptCount += 1;
                     setTimeout(attemptConnection, 30 * 1000);
                 } else {
                     reject(Error("Proctortrack app is not running."));
