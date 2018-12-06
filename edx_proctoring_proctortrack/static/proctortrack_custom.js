@@ -1,5 +1,7 @@
 import { handlerWrapper } from '@edx/edx-proctoring';
 
+var baseUrl = 'https://app.verificient.com:54545';
+
 var closePTApp = function () {
     /**
      * This function can be used to make a request to Proctortrack app to close itself. Proctortrack app will upload
