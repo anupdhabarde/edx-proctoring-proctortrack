@@ -1,0 +1,31 @@
+{
+  "name": "edx-proctoring-proctortrack",
+  "version": "1.0.0",
+  "description": "This is the proctortrack exam subsystem for the edx-proctoring.",
+  "main": "edx_proctoring_proctortrack/static/proctortrack_custom.js",
+  "scripts": {
+    "test": "echo \"WARNING: unimplemented\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joshivj/edx-proctoring-proctortrack.git"
+  },
+  "keywords": [
+    "proctoring",
+    "edx",
+    "verificient",
+    "proctortrack"
+  ],
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/joshivj/edx-proctoring-proctortrack/issues"
+  },
+  "homepage": "https://github.com/joshivj/edx-proctoring-proctortrack#readme",
+  "dependencies": {
+    "@edx/edx-proctoring": "^1.5.0-rc.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
