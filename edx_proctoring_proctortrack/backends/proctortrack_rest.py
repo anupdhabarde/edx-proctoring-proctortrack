@@ -14,6 +14,7 @@ class ProctortrackBackendProvider(BaseRestProctoringProvider):
     properties
     """
     base_url = 'https://prestaging.verificient.com'
+    npm_module = 'edx-proctoring-proctortrack'
 
     @property
     def instructor_url(self):
@@ -24,15 +25,11 @@ class ProctortrackBackendProvider(BaseRestProctoringProvider):
     def proctoring_instructions(self):
         "Returns the (optional) proctoring instructions"
         return [
-            _("Following are the steps which you need to follow in order to attempt proctored test using Proctortrack"),
-            _("Step one, click on start system check button to download the proctoring software"),
-            _("Next, run the software"),
-            _("You will be asked to verify your identity as part of the proctoring exam set up."),
-            _("Make sure you are on a computer with a webcam,"),
-            _("and that you have valid photo identification such as a driver\'s license or passport, before you continue."),
-            _("When you are finished, you will be redirected to the exam."),
-            _("Remember if you have issues relating to proctoring, you can contact Proctortrack technical support by emailing - support@verificient.com or by calling (844) 753-2020."),
-            _("Finally, have a nice day!"),
+            _('Click on the "Start System Check" button below to download the proctoring software.'),
+            _("Run the software"),
+            _("When you are finished verifying your identity and reviewing the Exam Guidelines, you will be redirected back to this page."),
+            _("Make sure you see the Proctortrack blue box and Webcam Feed."),
+            _('Click on the "Start Proctored Exam" button below to begin your exam.'),
                 ]
 
     def __init__(self, **kwargs):
