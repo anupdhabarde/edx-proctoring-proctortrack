@@ -13,7 +13,7 @@ class ProctortrackBackendProvider(BaseRestProctoringProvider):
     Subclasses must override base_url and may override the other url
     properties
     """
-    base_url = 'https://prestaging.verificient.com'
+    base_url = 'https://testing.verificient.com'
     npm_module = 'edx-proctoring-proctortrack'
 
     @property
