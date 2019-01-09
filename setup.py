@@ -4,15 +4,15 @@
 from __future__ import absolute_import, print_function
 
 import os
-import re
-import sys
 
 from setuptools import setup
 
+README = open(os.path.join(os.path.dirname(__file__), 'README.md')).read()
 
 setup(
     name='edx-proctoring-proctortrack',
     description='Proctoring subsystem for edX-proctoring',
+    long_description=README,
     author='Verificient',
     author_email='vivek@verificient.com',
     url='https://github.com/joshivj/edx-proctoring-proctortrack',
