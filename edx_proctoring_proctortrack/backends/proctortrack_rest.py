@@ -13,6 +13,9 @@ class ProctortrackBackendProvider(BaseRestProctoringProvider):
     Subclasses must override base_url and may override the other url
     properties
     """
+    verbose_name = 'Proctortrack'
+    tech_support_email = 'support@verificient.com'
+    tech_support_phone = '+1 844-753-2020'
     base_url = 'https://testing.verificient.com'
     npm_module = 'edx-proctoring-proctortrack'
 
@@ -25,11 +28,10 @@ class ProctortrackBackendProvider(BaseRestProctoringProvider):
     def proctoring_instructions(self):
         "Returns the (optional) proctoring instructions"
         return [
-            _('Click on the "Start System Check" button below to download the proctoring software.'),
-            _("Run the software"),
-            _("When you are finished verifying your identity and reviewing the Exam Guidelines, you will be redirected back to this page."),
-            _("Make sure you see the Proctortrack blue box and Webcam Feed."),
-            _('Click on the "Start Proctored Exam" button below to begin your exam.'),
+            _('Click on the "Start System Check" link below to download and run the proctoring software.'),
+            _("Once you have verified your identity and reviewed the exam guidelines in Proctortrack, you will be redirected back to this page."),
+            _("To confirm that proctoring has started, make sure your webcam feed and the blue Proctortrack box are both visible on your screen."),
+            _('Click on the "Start Proctored Exam" button below to continue.'),
                 ]
 
     def __init__(self, **kwargs):
