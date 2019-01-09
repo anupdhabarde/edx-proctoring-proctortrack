@@ -1,0 +1,5 @@
+include AUTHORS
+include README.MD
+graft edx_proctoring_proctortrack
+prune edx_proctoring_proctortrack/static/proctoring/spec
+global-exclude *.pyc
