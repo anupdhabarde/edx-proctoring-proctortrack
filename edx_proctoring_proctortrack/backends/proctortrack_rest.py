@@ -15,6 +15,8 @@ class ProctortrackBackendProvider(BaseRestProctoringProvider):
     """
     verbose_name = 'Proctortrack'
     tech_support_email = 'support@verificient.com'
+    learner_notification_from_email = 'no-reply@verificient.com'
+    integration_specific_email = 'proctortrack-support@edx.org'
     tech_support_phone = '+1 844-753-2020'
     base_url = 'https://testing.verificient.com'
     npm_module = 'edx-proctoring-proctortrack'
