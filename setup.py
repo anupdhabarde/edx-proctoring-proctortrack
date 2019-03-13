@@ -16,8 +16,9 @@ setup(
     author='Verificient',
     author_email='vivek@verificient.com',
     url='https://github.com/joshivj/edx-proctoring-proctortrack',
+    license="Apache-2.0",
     keywords='Proctortrack edx',
-    version='1.0.2',
+    version='1.0.3',
     packages=[
         'edx_proctoring_proctortrack',
     ],
