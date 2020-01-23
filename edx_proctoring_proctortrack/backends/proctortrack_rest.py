@@ -42,5 +42,4 @@ class ProctortrackBackendProvider(BaseRestProctoringProvider):
         client_secret: provided by backend service
         """
         super(ProctortrackBackendProvider, self).__init__(**kwargs)
-        self.session.oauth_uri = '/edx/oauth2/access_token'
 
