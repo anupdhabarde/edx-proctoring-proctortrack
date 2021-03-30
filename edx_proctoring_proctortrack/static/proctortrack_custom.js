@@ -29,7 +29,7 @@ var checkAppStatus = function () {
      * This function is used to check if the Proctortrack app is running or not.
      */
     return new Promise(function (resolve, reject) {
-        var maxFailedAttemptCount = 5;
+        var maxFailedAttemptCount = 2;
         var failedAttemptCount = 0;
 
         var attemptConnection = function () {
