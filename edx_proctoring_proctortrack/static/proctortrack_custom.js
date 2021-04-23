@@ -24,7 +24,7 @@ var closePTApp = function () {
     });
 };
 
-var checkAppStatus = function (timeout) {
+var checkAppStatus = function (timeout=150000) {
     /**
      * This function is used to check if the Proctortrack app is running or not.
      */
