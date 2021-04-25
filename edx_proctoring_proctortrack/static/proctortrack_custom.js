@@ -78,7 +78,7 @@ class PTProctoringServiceHandler {
     }
 
     onPing(timeout) {
-        return checkAppStatus(turnout);
+        return checkAppStatus(timeout);
     }
 }
 
