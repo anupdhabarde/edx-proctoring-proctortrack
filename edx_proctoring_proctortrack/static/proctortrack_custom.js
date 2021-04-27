@@ -24,13 +24,14 @@ var closePTApp = function () {
     });
 };
 
-var checkAppStatus = function () {
+var checkAppStatus = function (timeout=150000) {
     /**
      * This function is used to check if the Proctortrack app is running or not.
      */
     return new Promise(function (resolve, reject) {
         var maxFailedAttemptCount = 5;
         var failedAttemptCount = 0;
+        var retryInterval = Math.floor(timeout / maxFailedAttemptCount);
 
         var attemptConnection = function () {
             var xhr = new XMLHttpRequest();
@@ -46,7 +47,7 @@ var checkAppStatus = function () {
                 } else {
                     failedAttemptCount += 1;
                     if (failedAttemptCount < maxFailedAttemptCount) {
-                        setTimeout(attemptConnection, 30 * 1000);
+                        setTimeout(attemptConnection, retryInterval);
                     } else {
                         reject(Error("Failed to check if proctoring has started."));
                     }
@@ -55,7 +56,7 @@ var checkAppStatus = function () {
             xhr.onerror = function () {
                 failedAttemptCount += 1;
                 if (failedAttemptCount < maxFailedAttemptCount) {
-                    setTimeout(attemptConnection, 30 * 1000);
+                    setTimeout(attemptConnection, retryInterval);
                 } else {
                     reject(Error("Proctortrack app is not running."));
                 }
@@ -76,8 +77,8 @@ class PTProctoringServiceHandler {
         return closePTApp();
     }
 
-    onPing() {
-        return checkAppStatus();
+    onPing(timeout) {
+        return checkAppStatus(timeout);
     }
 }
 
