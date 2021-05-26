@@ -69,8 +69,8 @@ var checkAppStatus = function (timeout=150000) {
 };
 
 class PTProctoringServiceHandler {
-    onStartExamAttempt() {
-        return checkAppStatus();
+    onStartExamAttempt(timeout) {
+        return checkAppStatus(timeout);
     }
 
     onEndExamAttempt() {
