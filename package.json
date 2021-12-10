@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/joshivj/edx-proctoring-proctortrack#readme",
   "dependencies": {
-    "@edx/edx-proctoring": "^3.8.0"
+    "@edx/edx-proctoring": "^4.8.1"
   },
   "publishConfig": {
     "access": "public"
