@@ -22,7 +22,7 @@
     "url": "https://github.com/joshivj/edx-proctoring-proctortrack/issues"
   },
   "homepage": "https://github.com/joshivj/edx-proctoring-proctortrack#readme",
-  "dependencies": {
+  "peerDependencies": {
     "@edx/edx-proctoring": "^4.8.1"
   },
   "publishConfig": {
