@@ -58,7 +58,7 @@ const initPresenceAPI = (sessionKey) => {
 
 const checkAppStatus = (timeout, attemptId) => {
   if (useRemoteServer) {
-    return checkAppStatusUsingRemoteServer(timeout, attemptId);
+    return checkAppStatusUsingRemoteServer(attemptId, timeout);
   } else {
     return checkAppStatusUsingLocalServer(timeout);
   }
@@ -112,32 +112,44 @@ const checkAppStatusUsingLocalServer = (timeout = 150000) => {
   });
 };
 
-const checkAppStatusUsingRemoteServer = (timeout, sessionKey) => {
+const checkAppStatusUsingRemoteServer = (sessionKey, timeout = 150000) => {
   initPresenceAPI(sessionKey);
   return new Promise((resolve, reject) => {
+    let maxFailedAttemptCount = 5;
+    let failedAttemptCount = 0;
+    let retryInterval = Math.floor(timeout / maxFailedAttemptCount);
+
     if (!sessionKey) {
       reject(Error("Failed to check if proctoring has started."));
       return;
     }
     const sessionRef = database.ref(`/sessions/${sessionKey}`);
+
     const onData = (data) => {
       const value = data.val();
       const { is_et_online, is_proctoring_started } = value;
       if (is_et_online && is_proctoring_started) {
         resolve({ proctoring_started: true });
-      } else if (is_et_online && !is_proctoring_started) {
-        reject(
-          Error("Proctortrack app is running but proctoring hasn't started.")
-        );
-      } else if (!is_et_online) {
-        reject(Error("Proctortrack app is not running."));
       } else {
-        reject(Error("Failed to check if proctoring has started."));
+        failedAttemptCount += 1;
+        if (failedAttemptCount < maxFailedAttemptCount) {
+          setTimeout(() => {
+            sessionRef.once("value", onData, onError);
+          }, retryInterval);
+        } else if (is_et_online && !is_proctoring_started) {
+          reject(
+            Error("Proctortrack app is running but proctoring hasn't started.")
+          );
+        } else {
+          reject(Error("Failed to check if proctoring has started."));
+        }
       }
     };
+
     const onError = (error) => {
       reject(Error("Failed to check if proctoring has started."));
     };
+
     sessionRef.once("value", onData, onError);
   });
 };
@@ -175,22 +187,29 @@ const closePTAppUsingRemoteServer = (sessionKey) => {
       return;
     }
     const sessionRef = database.ref(`/sessions/${sessionKey}`);
-    sessionRef.update({ is_exam_ended: true });
+
     const onData = (data) => {
       const value = data.val();
-      const { is_et_online } = value;
-      if (is_et_online) {
-        reject(Error("Failed to close the Proctortrack App."));
-      } else if (!is_et_online) {
+      const { is_exam_ended } = value;
+      if (is_exam_ended) {
         resolve({ closing_proctoring: true });
       } else {
         reject(Error("Failed to close the Proctortrack App."));
       }
     };
+
     const onError = (error) => {
       reject(Error("Failed to close the Proctortrack App."));
     };
-    sessionRef.once("value", onData, onError);
+
+    sessionRef
+      .update({ is_exam_ended: true })
+      .then(() => {
+        sessionRef.once("value", onData, onError);
+      })
+      .catch((error) => {
+        reject(Error("Failed to close the Proctortrack App."));
+      });
   });
 };
 
