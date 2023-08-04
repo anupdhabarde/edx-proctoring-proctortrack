@@ -120,7 +120,7 @@ const checkAppStatusUsingRemoteServer = (sessionKey, timeout = 150000) => {
     let retryInterval = Math.floor(timeout / maxFailedAttemptCount);
 
     if (!sessionKey) {
-      reject(Error("Failed to check if proctoring has started."));
+      reject(Error("Failed to check Proctortrack app status due to key error"));
       return;
     }
     const sessionRef = database.ref(`/sessions/${sessionKey}`);
@@ -141,13 +141,13 @@ const checkAppStatusUsingRemoteServer = (sessionKey, timeout = 150000) => {
             Error("Proctortrack app is running but proctoring hasn't started.")
           );
         } else {
-          reject(Error("Failed to check if proctoring has started."));
+          reject(Error("Proctortrack app is not running."));
         }
       }
     };
 
     const onError = (error) => {
-      reject(Error("Failed to check if proctoring has started."));
+      reject(Error("Failed to check Proctortrack app status."));
     };
 
     sessionRef.once("value", onData, onError);
@@ -181,9 +181,10 @@ const closePTAppUsingLocalServer = () => {
 };
 
 const closePTAppUsingRemoteServer = (sessionKey) => {
+  initPresenceAPI(sessionKey);
   return new Promise((resolve, reject) => {
     if (!sessionKey) {
-      reject(Error("Failed to close the Proctortrack App."));
+      reject(Error("Failed to close Proctortrack app due to key error"));
       return;
     }
     const sessionRef = database.ref(`/sessions/${sessionKey}`);
@@ -194,12 +195,12 @@ const closePTAppUsingRemoteServer = (sessionKey) => {
       if (is_exam_ended) {
         resolve({ closing_proctoring: true });
       } else {
-        reject(Error("Failed to close the Proctortrack App."));
+        reject(Error("Proctortrack app is not closed."));
       }
     };
 
     const onError = (error) => {
-      reject(Error("Failed to close the Proctortrack App."));
+      reject(Error("Failed to check Proctortrack close status."));
     };
 
     sessionRef
