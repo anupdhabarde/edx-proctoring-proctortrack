@@ -2,7 +2,7 @@
 Base implementation of a REST backend, following the API documented in
 docs/backends.rst
 """
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from edx_proctoring.backends.rest import BaseRestProctoringProvider
 

@@ -18,7 +18,7 @@ setup(
     url='https://github.com/joshivj/edx-proctoring-proctortrack',
     license="Apache-2.0",
     keywords='Proctortrack edx',
-    version='1.2.1',
+    version='1.2.2',
     packages=[
         'edx_proctoring_proctortrack',
     ],
